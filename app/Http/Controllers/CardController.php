@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
-    protected function getHands($deck){
+    protected function getHands(){
         //hands 1 e 2        
-        $hands = array(setHand($deck), setHand($deck));               
-        $hands = array(getLinkHands($hands), $hands);
+        $hands = array($this->setHand(), $this->setHand());               
+        $links_hands = array($this->getLinkHands($hands), $hands);
         
-        return $hands;      
+        return $links_hands;      
     }
 
     protected function getLinkHands($hands){
@@ -20,52 +20,49 @@ class CardController extends Controller
                 if($hands[$i][$j] == "joker"){
                     $hands[$i][$j] = "coringa.jpg";
                 }
-                $explode = explode(",",$hands[$i][$j]);
-                if($explode[1] == 1){
-                    $hands[$i][$j] = "paus/".$explode[0].".jpg";
-                }
-                if($explode[1] == 2){
-                    $hands[$i][$j] = "ouros/".$explode[0].".jpg";
-                }
-                if($explode[1] == 3){
-                    $hands[$i][$j] = "copas/".$explode[0].".jpg";
-                }
-                if($explode[1] == 4){
-                    $hands[$i][$j] = "espadas/".$explode[0].".jpg";
+                else{
+                    $explode = explode(",",$hands[$i][$j]);
+                    if($explode[1] == 1){
+                        $hands[$i][$j] = "paus/".$explode[0].".jpg";
+                    }
+                    if($explode[1] == 2){
+                        $hands[$i][$j] = "ouros/".$explode[0].".jpg";
+                    }
+                    if($explode[1] == 3){
+                        $hands[$i][$j] = "copas/".$explode[0].".jpg";
+                    }
+                    if($explode[1] == 4){
+                        $hands[$i][$j] = "espadas/".$explode[0].".jpg";
+                    }
                 }
             }
         }
         return $hands;
     }
 
-    protected function setHand($deck){
-         // a quantidade de cartas de acordo com a quantidade de baralhos
+    protected function setHand(){
         //o maior número é o coringa
         //Cada carta possui um representante numérico assim como cada naipe possui o seu
-        $max_sort = ($deck * 53);
+
         $hand = array();
 
         for($i=0; $i < 5; $i++){
             //sorteia um numero entre todos os baralhos e o naipe
-            $sorted_number = rand(1, $max_sort);
+            $sorted_number = rand(1, 14);
             $sorted_suit = rand(1,4);
             //verifica se há uma carta coringa
-            if($sorted_number == $max_sort){
+            if($sorted_number == 14){
                 array_push($hand,'joker');    
             }
             else{
-                if($deck>1 && $sorted_number>56){
-                    //transforma o numero sorteado em carta valida
-                    $sorted_number = (($deck * 53) - $sorted_number);
-                    array_push($hand,$sorted_number.','.$sorted_suit);
-                }                                 
+                array_push($hand,$sorted_number.','.$sorted_suit);                                
             }            
         }
         
         return $hand;
     }
     protected function getJoker(){
-        $sorted_number = rand(1, 53);
+        $sorted_number = rand(1, 13);
         $sorted_suit = rand(1,4);
 
         if($sorted_suit == 1){

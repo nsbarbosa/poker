@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('card/{deck}', 'CardController@getHands');
+Route::get('card/', 'CardController@getHands');
 Route::get('joker', 'CardController@getJoker');
 Route::get('winner/{hands}', 'ScoreController@getWinner');
 Route::post('save','GameController@create');
