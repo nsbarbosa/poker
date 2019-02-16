@@ -8,30 +8,28 @@ class ScoreController extends Controller
 {
     //
     protected function getScore($hand){
-        $cards_suits = array();
-        $cards_numbers = array();
+        $suits = array();
+        $cards = array();
         $score = array();
         // separa em array de naipe e array de numeros das cartas
         for($i=0; $i<5; $i++){
             $explode = explode(",",$hand[$i]);
-            $suit = $explode[1];
-            $card = $explode[0];
-            array_push($cards_suits, $suit);
-            array_push($cards_numbers, $card);
+            array_push($suits, $explode[1]);
+            array_push($cards, $explode[0]);
         }       
 
-        $suit_frequency = array_count_values($cards_suits);
-        $cards_numbers = asort($cards_numbers);
-        $number_frequency = array_count_values($cards_numbers);
+        $suit_frequency = array_count_values($suits);
+        $cards = asort($cards);
+        $number_frequency = array_count_values($cards);
         
         //se todas as cartas forem do mesmo naipe
         if(suitFrequency($suit_frequency,4) == 4){
-            if(($cards_numbers[0] == 1) && ($cards_numbers[1] == 10) && (isSequence($cards_numbers,1,4))){
+            if(($cards[0] == 1) && ($cards[1] == 10) && (isSequence($cards,1,4))){
                 //royal flush
                 array_push($score,10);
             }
             else{
-                if(($cards_numbers[0] != 1) && isSequence($cards_numbers,0,4)){
+                if(($cards[0] != 1) && isSequence($cards,0,4)){
                     //straight flush
                     array_push($score,9);
                 }
@@ -62,7 +60,7 @@ class ScoreController extends Controller
             }
         }
         else{
-            if(isSequence($cards_numbers,0,4)){
+            if(isSequence($cards,0,4)){
                 //sequencia
                 array_push($score,5);
             }
