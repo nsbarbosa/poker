@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class ScoreController extends Controller
 {
     //
-    protected function getScore($hand){
+    public function getScore($hand){
         $suits = array();
         $cards = array();
         $score = array();
@@ -19,11 +19,11 @@ class ScoreController extends Controller
         }       
 
         $suit_frequency = array_count_values($suits);
-        $cards = asort($cards);
+        asort($cards);
         $number_frequency = array_count_values($cards);
         
         //se todas as cartas forem do mesmo naipe
-        if(suitFrequency($suit_frequency,4) == 4){
+        if($this->suitFrequency($suit_frequency,4) == 4){
             if(($cards[0] == 1) && ($cards[1] == 10) && (isSequence($cards,1,4))){
                 //royal flush
                 array_push($score,10);
@@ -109,7 +109,6 @@ class ScoreController extends Controller
     //o numero de frequencia das cartas
     protected function numberFrequency($number_frequency, $compare_frequency){
         $cont =0;
-        //$frequency = array_count_values($cards);
         for($i=0;$i<5;$i++){
             if($number_frequency[$i] == $compare_frequency){
                 $cont++;
@@ -119,7 +118,7 @@ class ScoreController extends Controller
     }
     protected function suitFrequency($suit_frequency, $compare_frequency){
         $cont =0;
-        for($i=0;$i<5;$i++){
+        for($i=0;$i<4;$i++){
             if($suit_frequency[$i] == $compare_frequency){
                 $cont++;
             }            

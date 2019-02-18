@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('card/', 'CardController@getHands');
-Route::get('joker', 'CardController@getJoker');
-Route::get('winner/{hands}', 'ScoreController@getWinner');
-Route::post('save','GameController@create');
+Route::get('card', 'HandsController@getHands')->middleware('cors');
+Route::get('joker', 'CardController@getJoker')->middleware('cors');
+Route::get('winner/{hands}', 'ScoreController@getWinner')->middleware('cors');
+Route::post('save','GameController@create')->middleware('cors');
