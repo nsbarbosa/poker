@@ -8,6 +8,8 @@ class HandsController extends Controller
 {
     //
     public $hands;
+    public $hand1 = array();
+    public $hand2 = array();
 
     public function getHands(){
 
@@ -19,19 +21,23 @@ class HandsController extends Controller
             $hands[$i] = $card; 
 
             if($i<5){
-                $hand1[$i] = $card->value.','.$card->suit;
+                $this->hand1[$i] = $card->value.','.$card->suit;
             }
             if($i>=5){
-                $hand2[$i] = $card->value.','.$card->suit;
+                $this->hand2[$i-5] = $card->value.','.$card->suit;
             }
                         
         }
-        $score = new ScoreController();
-        $score1 = $score->getScore($hand1);
-        $score2 = $score->getScore($hand2);
-        $winner = getWinner($score1,$score2);
-        array_push($hands,$winner);
+        
         return $hands;
 
+    }
+    public function getScore(){
+        $score = new ScoreController();
+        $score1 = $score->getScore($this->hand1);
+        $score2 = $score->getScore($this->hand2);
+        $winner = $score->getWinner($score1,$score2);
+        
+        return $winner;
     }
 }

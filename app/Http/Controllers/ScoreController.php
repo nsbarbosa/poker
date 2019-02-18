@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 class ScoreController extends Controller
 {
     //
+    public $score = array();
+    public $winner;
     public function getScore($hand){
         $suits = array();
         $cards = array();
-        $score = array();
         // separa em array de naipe e array de numeros das cartas
         for($i=0; $i<5; $i++){
             $explode = explode(",",$hand[$i]);
@@ -24,75 +25,75 @@ class ScoreController extends Controller
         
         //se todas as cartas forem do mesmo naipe
         if($this->suitFrequency($suit_frequency,4) == 4){
-            if(($cards[0] == 1) && ($cards[1] == 10) && (isSequence($cards,1,4))){
+            if(($cards[0] == 1) && ($cards[1] == 10) && ($this->isSequence($cards,1,4))){
                 //royal flush
-                array_push($score,10);
+                array_push($this->score,10);
             }
             else{
-                if(($cards[0] != 1) && isSequence($cards,0,4)){
+                if(($cards[0] != 1) && $this->isSequence($cards,0,4)){
                     //straight flush
-                    array_push($score,9);
+                    array_push($this->score,9);
                 }
-                if(numberFrequency($number_frequency,1) == 5){
+                if($this->numberFrequency($number_frequency,1) == 5){
                     //flush
-                    array_push($score,6);
+                    array_push($this->score,6);
                 }
-                if(numberFrequency($number_frequency,4) == 4){
+                if($this->numberFrequency($number_frequency,4) == 4){
                     //quadra
-                    array_push($score,8);
+                    array_push($this->score,8);
                 }
-                if((numberFrequency($number_frequency,3) == 3) && (numberFrequency($number_frequency,2) == 2)){
+                if(($this->numberFrequency($number_frequency,3) == 3) && ($this->numberFrequency($number_frequency,2) == 2)){
                     //full house
-                    array_push($score,7);
+                    array_push($this->score,7);
                 }
-                if(numberFrequency($number_frequency,1) == 3){
+                if($this->numberFrequency($number_frequency,1) == 3){
                     //trinca
-                    array_push($score,4);
+                    array_push($this->score,4);
                 }
-                if(numberFrequency($number_frequency,1) == 4){
+                if($this->numberFrequency($number_frequency,1) == 4){
                     //dois pares
-                    array_push($score,3);
+                    array_push($this->score,3);
                 }
-                if(numberFrequency($number_frequency,1) == 2){
+                if($this->numberFrequency($number_frequency,1) == 2){
                     //um par
-                    array_push($score,2);
+                    array_push($this->score,2);
                 }
             }
         }
         else{
-            if(isSequence($cards,0,4)){
+            if($this->isSequence($cards,0,4)){
                 //sequencia
-                array_push($score,5);
+                array_push($this->score,5);
             }
-            if(numberFrequency($number_frequency,4) == 4){
+            if($this->numberFrequency($number_frequency,4) == 4){
                 //quadra
-                array_push($score,8);
+                array_push($this->score,8);
             }
-            if((numberFrequency($number_frequency,3) == 3) && (numberFrequency($number_frequency,2) == 2)){
+            if(($this->numberFrequency($number_frequency,3) == 3) && ($this->numberFrequency($number_frequency,2) == 2)){
                 //full house
-                array_push($score,7);
+                array_push($this->score,7);
             }
-            if(numberFrequency($number_frequency,1) == 3){
+            if($this->numberFrequency($number_frequency,1) == 3){
                 //trinca
-                array_push($score,4);
+                array_push($this->score,4);
             }
-            if(numberFrequency($number_frequency,1) == 4){
+            if($this->numberFrequency($number_frequency,1) == 4){
                 //dois pares
-                array_push($score,3);
+                array_push($this->score,3);
             }
-            if(numberFrequency($number_frequency,1) == 2){
+            if($this->numberFrequency($number_frequency,1) == 2){
                 //um par
-                array_push($score,2);
+                array_push($this->score,2);
             }
         } 
-        if(!$score){
-            array_push($score,1);
+        if(!$this->score){
+            array_push($this->score,1);
         }
-        return $score;
+        return $this->score;
     }
 
      //verificar se é uma sequencia
-     protected function isSequence($cards,$min,$max){
+     public function isSequence($cards,$min,$max){
         $cont =0;
         for($i=$min; $i<$max; $i++){
             if($cards[$i]  == $cards[$i+1]+1){
@@ -107,21 +108,24 @@ class ScoreController extends Controller
         }
     }
     //o numero de frequencia das cartas
-    protected function numberFrequency($number_frequency, $compare_frequency){
+    public function numberFrequency($number_frequency, $compare_frequency){
         $cont =0;
-        for($i=0;$i<5;$i++){
-            if($number_frequency[$i] == $compare_frequency){
+        while ($index = current($number_frequency)) {
+            if ($index == $compare_frequency) {
                 $cont++;
-            }            
+            }
+            next($number_frequency);
         }
         return $cont++;
     }
-    protected function suitFrequency($suit_frequency, $compare_frequency){
+    public function suitFrequency($suit_frequency, $compare_frequency){
         $cont =0;
-        for($i=0;$i<4;$i++){
-            if($suit_frequency[$i] == $compare_frequency){
+        
+        while ($index = current($suit_frequency)) {
+            if ($index == $compare_frequency) {
                 $cont++;
-            }            
+            }
+            next($suit_frequency);
         }
         return $cont++;
     }
@@ -130,15 +134,15 @@ class ScoreController extends Controller
         $player1 = asort($score1);
         $player2 = asort($score2);
         if($player1[count($player1) -1] > $player2[count($player2) -1]){
-            $winner = 1;
+            $this->winner = 1;
         }
         elseif($player1[count($player1) -1] > $player2[count($player2) -1]){
-            $winner = 2;
+            $this->winner = 2;
         }
         else{
-            $winner = rand(1,2);
+            $this->winner = rand(1,2);
         }
-        return $winner;
+        return $this->winner;
     }
 
 }

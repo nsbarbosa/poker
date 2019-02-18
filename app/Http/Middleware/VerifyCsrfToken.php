@@ -13,5 +13,6 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
+        'http://127.0.0.1:8000/save',
     ];
 }
