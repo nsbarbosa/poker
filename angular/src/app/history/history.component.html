@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="columns is-centered">
+    <div class="column">
+      <table class="table is-bordered is-striped is-narrow is-hoverable">
+        <thead>
+          <tr>
+            <th>Partida</th>
+            <th>Ganhador</th>
+            <th>Data da partida</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor='let resultado of historico'>
+            <td>Partida número: {{resultado.id}}</td>
+            <td>Jogador {{resultado.winner}}</td>
+            <td>{{resultado.created_at}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

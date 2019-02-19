@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div *ngIf="msg" [hidden]="cartas.length != 0" class="columns">
+    <div class="column has-text-centered">
+      {{msg}}
+    </div>
+  </div>
+  <p class="has-text-dark">Jogador 1</p>
+  <div class="columns">
+    <div class="column" *ngFor="let cartas1 of mao1">
+      <figure class="image is-square">
+        <img src="{{URL_PADRAO}}storage/{{cartas1.image}} ">
+      </figure>
+    </div>
+  </div>
+  <p>Jogador 2</p>
+  <div class="columns">
+    <div class="column" *ngFor="let cartas2 of mao2">
+      <figure class="image is-square">
+        <img src="{{URL_PADRAO}}storage/{{cartas2.image}}">
+      </figure>
+    </div>
+  </div>
+  <div *ngIf="ganhador" class="columns">
+    <div class="column has-text-centered">
+      Jogador {{ganhador}} é o vencedor!
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column has-text-centered">
+      <button class="button is-info" [ngClass]="cartas.length == 0 ? 'button-info' : 'button-danger'"
+        (click)=consultaCartas()>{{msgButton}}</button>
+    </div>
+  </div>
+</div>
