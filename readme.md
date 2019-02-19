@@ -1,6 +1,6 @@
 <p>Rodar com o servidor Web Apache e o frontend está disponível em:<p>
   
-  http://localhost/poker/frontend/home
+  http://localhost/poker/frontend
   
 <b>Por favor, utilize a extensão do Chrome informada na tela inicial</b>
 
