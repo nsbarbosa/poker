@@ -1,3 +1,9 @@
+<p>Rodar com o servidor Web Apache e o frontend está disponível em:<p>
+  
+  <a href="http://localhost/poker/frontend/home>Frontend</a>
+  
+<b>Por favor, utilize a extensão do Chrome informada na tela inicial</b>
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
